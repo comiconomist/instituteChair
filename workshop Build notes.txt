@@ -1,0 +1,23 @@
+Add a chair
+Steps:
+1) Find a PlayerHouse_chair under <Items\Constructible Objects>
+2) Duplicate
+3) Change "created object" parameter to NpcChairInstituteCafeSit01 (is a thing under WorldObjects\Furniture\Institute)
+
+Add a fridge
+1) Find Preware_Refrigerator_Broken under <Worl Objects\Container>
+2) Duplicate
+3) Delete Item List
+4) Change ID to InstituteChairFridge
+5) Add keywords: IsChestForStatTracking, WorkshopContainerKeyword
+6) Make preview image: go to <Miscellaneous\Transform> and duplicate something similar, workshop_Empty_NukaColaMachine
+7) Duplicate: change ID to workshop_InstituteChairFride, change Preview Object to InstituteChangeFridge
+8) Go back to InstituteChairFridge (object) and add the preview
+9) Create details under <Items\Constructible Objects> : duplicated floor safe in this case
+
+
+Lesson:
+Static workshop objects need three things:
+- a world object, which seems to include all the good stuff like scripts and animations
+- a Constructibe Object record, which includes crafting recipes
+- a "Tranform record", which gives the workshop build preview
