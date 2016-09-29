@@ -21,8 +21,12 @@ acceptableFileTypes = ['.ba2', '.esp']
 
 # Go to Fallout 4 folder of mod working directory:
 print(os.getcwd())
-os.chdir('../Fallout 4')
-modWorkfo4Dir = os.getcwd();
+os.chdir('..')
+projDir = os.getcwd()
+projName = projDir.split("\\")[-1]
+
+os.chdir('./Fallout 4')
+modWorkfo4Dir = os.getcwd()
 #modWorkfo4Dir = 'C:\\Games\\fo4_modding\\Projects\\instituteChair\\Fallout 4'
 
 # True fallout 4 directory:
@@ -37,20 +41,30 @@ for dir_, _, files in os.walk(modWorkfo4Dir):
         if relFile[-4:] in acceptableFileTypes:
             fileRelPathList.append(relFile)
 
+# Add to the list possible .esp and .ba2 files:
+fileRelPathList.append('Data\\' + projName + '.ba2')
+fileRelPathList.append('Data\\' + projName + '.esp')
+
 # Loop over files in my mod working directory: if a more recent copy exists in
 # the fallout 4 root directory I have probably used the creation kit, so copy
 # the more recent one
 for myFile in fileRelPathList:
     if os.path.isfile(fo4Dir + '\\' + myFile):
-        # Fallout 4 root directory time:
-        fo4Time = os.path.getmtime(fo4Dir + '\\' + myFile)
-        fo4TimeStr = datetime.datetime.fromtimestamp(fo4Time).strftime('%Y-%m-%d %H:%M:%S')
-        # New mod time:
-        modTime = os.path.getmtime(modWorkfo4Dir + '\\' + myFile)
-        modTimeStr = datetime.datetime.fromtimestamp(modTime).strftime('%Y-%m-%d %H:%M:%S')
-        print(myFile + ' fo4Time: ' + fo4TimeStr + ' modTime: ' + modTimeStr)
-        if fo4Time > modTime :
+        if os.path.isfile(modWorkfo4Dir + '\\' + myFile):
+            # Fallout 4 root directory time:
+            fo4Time = os.path.getmtime(fo4Dir + '\\' + myFile)
+            fo4TimeStr = datetime.datetime.fromtimestamp(fo4Time).strftime('%Y-%m-%d %H:%M:%S')
+            # New mod time:
+            modTime = os.path.getmtime(modWorkfo4Dir + '\\' + myFile)
+            modTimeStr = datetime.datetime.fromtimestamp(modTime).strftime('%Y-%m-%d %H:%M:%S')
+            print(myFile + ' fo4Time: ' + fo4TimeStr + ' modTime: ' + modTimeStr)
+            if fo4Time > modTime :
+                print('Copying ' + myFile + ' from fo4 to mod working directory')
+                shutil.copyfile(fo4Dir + '\\' + myFile, modWorkfo4Dir + '\\' + myFile)
+        else:
+            print(myFile + 'only exists in fo4 directory')
             print('Copying ' + myFile + ' from fo4 to mod working directory')
             shutil.copyfile(fo4Dir + '\\' + myFile, modWorkfo4Dir + '\\' + myFile)
+            
         
 print('Copying complete')
